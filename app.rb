@@ -3,11 +3,17 @@ require 'sinatra'
 require 'haml'
 require 'pivotal-tracker'
 
-def get_stories
+MY_STORIES = "My Stories"
+
+def get_stories filter=nil
   PivotalTracker::Client.token = user[:token]
   projects = PivotalTracker::Project.all
+  # :search parameter must be first, or the other params
+  # are ignored by Project.stories.all()
+  params = {:search => filter, :owner => user[:name]}
+  params[:search] = filter if filter
   stories = projects.map {|project|
-    project.stories.all(:owner => user[:name])
+    project.stories.all(params)
   }.flatten.sort_by {|s| s.name}.sort_by {|s|s.current_state}
 end
 
@@ -36,6 +42,11 @@ def logged_in?
   not session[:token].nil?
 end
 
+def render_stories title, stories
+  @title, @stories = title, stories
+  haml :stories
+end
+
 get '/', :auth => :user do
   redirect to('/stories')
 end
@@ -49,9 +60,12 @@ post '/login' do
   redirect to('/stories')
 end
 
+post '/search' do
+  render_stories("Search",get_stories(params[:search]))
+end
+
 get '/stories', :auth => :user do
-  @stories = get_stories
-  haml :stories
+  render_stories(MY_STORIES,get_stories)
 end
 
 get '/logout' do

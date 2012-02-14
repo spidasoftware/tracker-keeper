@@ -16,5 +16,6 @@ keep track of all your tracker stories (across projects) while maintaining your 
 ## todo
 
 - make it do stuff
+- make it fast
 - make it pretty
 - package as a gem

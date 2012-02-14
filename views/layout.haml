@@ -17,8 +17,17 @@
           .nav-collapse
             %ul.nav
               - if logged_in?
-                %li.active
-                  %a{:href => "/stories"} Stories
+                %li
+                  %form.navbar-search{:action => "search", :method => "post"}
+                    %input.search-query{:placeholder => "Search",:type => "search",:name => "search"}
+                - if @title != MY_STORIES
+                  %li
+                    %a{:href => "/stories"} My Stories
+                  %li.active
+                    %a{:href => "#"} #{@title}
+                - else
+                  %li.active
+                    %a{:href => "/stories"} My Stories
                 %li
                   %a{:href => "/logout"} Log Out
     .container{:style => "margin-top:60px"}= yield
