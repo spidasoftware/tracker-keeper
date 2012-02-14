@@ -1,0 +1,16 @@
+!!!
+%html
+  %head
+    %title tracker keeper
+    %meta{:charset => "utf-8"}
+    %link{:href => "css/bootstrap-responsive.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "css/bootstrap.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %script{:src => "js/bootstrap.min.js", :type => "application/x-javascript"}
+    %script{:src => "js/jquery.min.js", :type => "application/x-javascript"}
+    %script{:src => "js/less.min.js", :type => "application/x-javascript"}
+  %body
+    .stories
+      %label Stories for #{@name}
+      - @stories.each do |story|
+        .story
+          %span #{story.name} [#{story.story_type}] [#{story.current_state}]
