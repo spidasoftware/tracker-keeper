@@ -1,0 +1,21 @@
+!!!
+%html
+  %head
+    %title tracker keeper
+    %meta{:charset => "utf-8"}
+    %link{:href => "css/bootstrap-responsive.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "css/bootstrap.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %script{:src => "js/bootstrap.min.js", :type => "application/x-javascript"}
+    %script{:src => "js/jquery.min.js", :type => "application/x-javascript"}
+    %script{:src => "js/less.min.js", :type => "application/x-javascript"}
+  %body
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container
+          %a.btn.btn-navbar{:"data-toggle" => "collapse", :"data-target" => ".nav-collapse"}
+          %a.brand{:href => "#"} tracker keeper
+          .nav-collapse
+            %ul.nav
+              %li.active
+                %a{:href => "#"} Stories
+    .container{:style => "margin-top:60px"}= yield
