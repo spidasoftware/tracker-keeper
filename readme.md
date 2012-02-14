@@ -8,9 +8,9 @@ keep track of all your tracker stories (across projects) while maintaining your 
 
 ## tools
 
-- [haml](haml-lang.com)
+- [haml](http://haml-lang.com)
 - [pivotal-tracker](https://github.com/jsmestad/pivotal-tracker)
-- [sinatra](www.sinatrarb.com)
+- [sinatra](http://www.sinatrarb.com)
 - [twitter bootstrap](http://twitter.github.com/bootstrap/)
 
 ## todo
