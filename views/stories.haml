@@ -13,4 +13,6 @@
       %label Stories for #{@name}
       - @stories.each do |story|
         .story
-          %span #{story.name} [#{story.story_type}] [#{story.current_state}]
+          %span
+            %a{:href => "#{story.url}"} #{story.name}
+            [#{story.story_type}] [#{story.current_state}]
