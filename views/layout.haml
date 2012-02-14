@@ -16,6 +16,9 @@
           %a.brand{:href => "#"} tracker keeper
           .nav-collapse
             %ul.nav
-              %li.active
-                %a{:href => "#"} Stories
+              - if logged_in?
+                %li.active
+                  %a{:href => "/stories"} Stories
+                %li
+                  %a{:href => "/logout"} Log Out
     .container{:style => "margin-top:60px"}= yield
