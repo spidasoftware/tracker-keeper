@@ -72,10 +72,13 @@ post '/login' do
 end
 
 post '/search' do
+  stories = session[:stories].select {|s|
+    s[:name].downcase.include?(params[:search].downcase)
+  }
   render_stories(
     "Search",
-    get_stories(params[:search]),
-    Time.now.strftime("%l:%M %P"))
+    stories,
+   session[:cache_time])
 end
 
 get '/search' do
