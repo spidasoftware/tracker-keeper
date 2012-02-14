@@ -1,7 +1,10 @@
 %h1 #{@title}
+- if @title == MY_STORIES
+  %a{:href => "/refresh"} Refresh List
+  (last refreshed at #{@age})
 .stories
   - @stories.each do |story|
     .story
       %span
-        %a{:href => "#{story.url}"} #{story.name}
-        [#{story.story_type}] [#{story.current_state}]
+        %a{:href => "#{story[:url]}"} #{story[:name]}
+        [#{story[:type]}] [#{story[:state]}]

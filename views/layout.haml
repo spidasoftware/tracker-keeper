@@ -5,6 +5,7 @@
     %meta{:charset => "utf-8"}
     %link{:href => "css/bootstrap-responsive.min.css", :rel => "stylesheet", :type => "text/css"}/
     %link{:href => "css/bootstrap.min.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "less/stories.less", :rel => "stylesheet/less", :type => "text/css"}/
     %script{:src => "js/bootstrap.min.js", :type => "application/x-javascript"}
     %script{:src => "js/jquery.min.js", :type => "application/x-javascript"}
     %script{:src => "js/less.min.js", :type => "application/x-javascript"}
@@ -30,4 +31,4 @@
                     %a{:href => "/stories"} My Stories
                 %li
                   %a{:href => "/logout"} Log Out
-    .container{:style => "margin-top:60px"}= yield
+    .container.main= yield

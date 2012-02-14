@@ -12,9 +12,20 @@ def get_stories filter=nil
   # are ignored by Project.stories.all()
   params = {:search => filter, :owner => user[:name]}
   params[:search] = filter if filter
-  stories = projects.map {|project|
+  stories = projects.map do |project|
     project.stories.all(params)
-  }.flatten.sort_by {|s| s.name}.sort_by {|s|s.current_state}
+  end.flatten.sort_by do |s|
+    s.name
+  end.sort_by do |s|
+    s.current_state
+  end.map do |s|
+    {
+      :name  => s.name,
+      :url   => s.url,
+      :type  => s.story_type,
+      :state => s.current_state
+    }
+  end
 end
 
 def authenticate token, name
@@ -42,8 +53,8 @@ def logged_in?
   not session[:token].nil?
 end
 
-def render_stories title, stories
-  @title, @stories = title, stories
+def render_stories title, stories, age
+  @title, @stories, @age = title, stories, age
   haml :stories
 end
 
@@ -61,11 +72,27 @@ post '/login' do
 end
 
 post '/search' do
-  render_stories("Search",get_stories(params[:search]))
+  render_stories(
+    "Search",
+    get_stories(params[:search]),
+    Time.now.strftime("%l:%M %P"))
+end
+
+get '/search' do
+  redirect to('/stories')
 end
 
 get '/stories', :auth => :user do
-  render_stories(MY_STORIES,get_stories)
+  stories = session[:stories] ||= begin
+    session[:cache_time] = Time.now.strftime("%l:%M %P")
+    get_stories
+  end
+  render_stories(MY_STORIES, stories,session[:cache_time])
+end
+
+get '/refresh', :auth => :user do
+  session[:stories] = nil
+  redirect to('/stories')
 end
 
 get '/logout' do
