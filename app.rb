@@ -13,20 +13,47 @@ def get_stories filter=nil
   params = {:search => filter, :owner => user[:name]}
   params[:search] = filter if filter
   stories = projects.map do |project|
-    project.stories.all(params)
+    project.stories.all(params).map do |story|
+      to_data(project, story)
+    end
   end.flatten.sort_by do |s|
-    s.name
+    s[:name]
   end.sort_by do |s|
-    s.current_state
-  end.map do |s|
-    {
-      :name  => s.name,
-      :url   => s.url,
-      :type  => s.story_type,
-      :state => s.current_state
-    }
+    priority s[:state]
   end
 end
+
+def to_data project, story
+  {
+    :project => project.id,
+    :name  => story.name,
+    :url   => story.url,
+    :type  => story.story_type,
+    :state => story.current_state,
+    :id    => story.id
+  }
+end
+
+def next_action state
+  case state
+    when "unscheduled"; ["Start"]
+    when "unstarted"  ; ["Start"]
+    when "started"    ; ["Finish"]
+    when "finished"   ; ["Deliver"]
+    when "delivered"  ; ["Accept","Reject"]
+  end
+end
+
+def priority state
+  case state
+    when "unscheduled"; 4
+    when "unstarted"  ; 3
+    when "started"    ; 2
+    when "finished"   ; 1
+    when "delivered"  ; 0
+  end
+end
+
 
 def authenticate token, name
   session[:name], session[:token] = name, token
@@ -77,6 +104,7 @@ post '/search' do
   }
   render_stories(
     "Search",
+    # "Search for &quot;#{params[:search]}&quot;",
     stories,
    session[:cache_time])
 end
@@ -86,8 +114,11 @@ get '/search' do
 end
 
 get '/stories', :auth => :user do
+  if session[:cache_time] and Time.now - Time.at(session[:cache_time].to_i) > 600
+    session[:stories] = nil
+  end
   stories = session[:stories] ||= begin
-    session[:cache_time] = Time.now.strftime("%l:%M %P")
+    session[:cache_time] = Time.now.nsec
     get_stories
   end
   render_stories(MY_STORIES, stories,session[:cache_time])
@@ -98,7 +129,28 @@ get '/refresh', :auth => :user do
   redirect to('/stories')
 end
 
-get '/logout' do
+get '/load', :auth => :user do
+  if project = PivotalTracker::Project.find(params[:projectId].to_i) and
+    @story = project.stories.find(params[:storyId].to_i)
+      haml :details, :layout => false
+  else
+    "(None)"
+  end
+end
+
+post '/update', :auth => :user do
+  @actions = [params[:action]]
+  if project = PivotalTracker::Project.find(params[:projectId].to_i) and
+    story = project.stories.find(params[:storyId].to_i)
+      story.update(:current_state => params[:action].downcase + "ed")
+      @actions = next_action(story.current_state)
+      @stories.reject! {|s| s[:id] == story.id}
+      @stories << to_data(project,story)
+  end
+  haml :actions, :layout => false
+end
+
+get '/logout', :auth => :user do
   session[:token] = nil
   redirect to('/login')
 end

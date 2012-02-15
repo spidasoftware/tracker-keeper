@@ -3,22 +3,27 @@
   %head
     %title tracker keeper
     %meta{:charset => "utf-8"}
+    %link{:href => "http://fonts.googleapis.com/css?family=Lilita+One", :rel=>'stylesheet', :type=>'text/css'}
+    %link{:href => "/favicon.ico", :rel => "favicon"}/
     %link{:href => "css/bootstrap-responsive.min.css", :rel => "stylesheet", :type => "text/css"}/
     %link{:href => "css/bootstrap.min.css", :rel => "stylesheet", :type => "text/css"}/
     %link{:href => "less/stories.less", :rel => "stylesheet/less", :type => "text/css"}/
-    %script{:src => "js/bootstrap.min.js", :type => "application/x-javascript"}
     %script{:src => "js/jquery.min.js", :type => "application/x-javascript"}
+    %script{:src => "js/bootstrap.min.js", :type => "application/x-javascript"}
+    %script{:src => "js/tracker.js", :type => "application/x-javascript"}
     %script{:src => "js/less.min.js", :type => "application/x-javascript"}
   %body
     .navbar.navbar-fixed-top
       .navbar-inner
         .container
           %a.btn.btn-navbar{:"data-toggle" => "collapse", :"data-target" => ".nav-collapse"}
-          %a.brand{:href => "#"} tracker keeper
+          %a.brand{:href => "#"}
+            %img{:src => "/img/logo.png"}
+            tracker keeper
           .nav-collapse
             %ul.nav
               - if logged_in?
-                %li
+                %li.search
                   %form.navbar-search{:action => "search", :method => "post"}
                     %input.search-query{:placeholder => "Search",:type => "search",:name => "search"}
                 - if @title != MY_STORIES
@@ -31,4 +36,4 @@
                     %a{:href => "/stories"} My Stories
                 %li
                   %a{:href => "/logout"} Log Out
-    .container.main= yield
+    .main= yield

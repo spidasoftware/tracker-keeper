@@ -1,7 +1,116 @@
-.stories {
-  margin: 12px;
+body {
+  width:100%;
+  height:100%;
+  background: url(/img/farmer.png) repeat;
+}
+
+.navbar .navbar-inner {
+  background-image: -webkit-linear-gradient(top, hsl(0, 0%, 20%), hsl(204, 45%, 26%));
+  background-image: -moz-linear-gradient(top, hsl(0, 0%, 20%), hsl(204, 45%, 26%));
+  background-image: -ms-linear-gradient(top, hsl(0, 0%, 20%), hsl(204, 45%, 26%));
+  background-image: -o-linear-gradient(top, hsl(0, 0%, 20%), hsl(204, 45%, 26%));
+  background-image: linear-gradient(top, hsl(0, 0%, 20%), hsl(204, 45%, 26%));
+  .brand {
+    font-family: 'Lilita One';
+    font-size:27px;
+    padding: 4px 20px;
+    img {
+      float: left;
+      padding: 2px 4px 0 5px;
+    }
+  }
+  .nav {
+    .search {
+      margin-right:5px;
+      .search-query {
+        border-radius: 7px;
+      }
+    }
+    .active a {
+      background-color: hsla(0, 0%, 0%, 0.3);
+      box-shadow: 1px 1px 1px rgba(0,0,0,0.4) inset;
+    }
+  }
 }
 
 .main {
-  margin-top: 60px;
+  padding: 60px 0;
+  height: 100%;
+  background: hsla(0, 100%, 100%, 0.7);
+  max-width: 800px;
+  margin: auto;
+  .title {
+    margin: 5px;
+  }
+  .stories {
+    margin-top: 12px;
+    .story {
+      background:white;
+      border-top: 1px solid hsla(170, 12%, 50%, 0.5);
+      padding: 10px;
+      &.unscheduled {
+        background: hsla(175, 50%, 76%, 0.3);
+      }
+      &:hover {
+        background-color: hsla(47,100%,80%,0.15);
+      }
+      a.name {
+        cursor:pointer;
+        font-size: 14px;
+        &:hover {
+          text-decoration:none;
+        }
+      }
+      .story-type {
+        width: 16px;
+        height: 16px;
+        float: left;
+        padding: 3px;
+        &.bug { background: url(/img/bug.png) no-repeat}
+        &.feature { background: url(/img/feature.png) no-repeat}
+        &.chore { background: url(/img/chore.png) no-repeat}
+        &.release { background: url(/img/release.png) no-repeat}
+      }
+      .actions {
+        margin-top: -5px;
+        float: right;
+        input[type="button"] {
+          width: 60px;
+          font-weight:bold;
+          color:white;
+        }
+        .btn-deliver {
+          background-color: hsl(56, 100%, 48%);
+          background-image: -moz-linear-gradient(top, hsl(57, 100%, 49%), hsl(44, 100%, 49%));
+          background-image: -ms-linear-gradient(top, hsl(57, 100%, 49%), hsl(44, 100%, 49%));
+          background-image: -webkit-gradient(linear, 0 0, 0 100%, from(hsl(57, 100%, 40%)), to(hsl(44, 100%, 40%)));
+          background-image: -webkit-linear-gradient(top, hsl(57, 100%, 49%), hsl(44, 100%, 49%));
+          background-image: -o-linear-gradient(top, hsl(57, 100%, 49%), hsl(44, 100%, 49%));
+          background-image: linear-gradient(top, hsl(57, 100%, 49%), hsl(44, 100%, 49%));
+          background-repeat: repeat-x;
+          filter: progid:dximagetransform.microsoft.gradient(startColorstr='#CCB400', endColorstr='#CC9600', GradientType=0);
+          border-color: hsl(44, 100%, 40%) hsl(44, 100%, 40%) hsl(44, 100%, 25%);
+          border-color: hsla(0, 0%, 0%, 0.1) hsla(0, 0%, 0%, 0.1) hsla(0, 0%, 0%, 0.25);
+          filter: progid:dximagetransform.microsoft.gradient(enabled=false);
+        }
+        input[value="Start"] {
+          color: #383838;
+        }
+      }
+      .description {
+        margin-top:4px;
+        color: #383838;
+        display:none;
+      }
+    }
+  }
+  .fade {
+    opacity: 0.3;
+    transition: opacity .25s ease-in-out;
+    -moz-transition: opacity .25s ease-in-out;
+    -webkit-transition: opacity .25s ease-in-out;
+    &:hover {
+      opacity: 1;
+    }
+  }
 }

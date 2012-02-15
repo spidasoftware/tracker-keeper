@@ -1,10 +1,15 @@
-%h1 #{@title}
-- if @title == MY_STORIES
-  %a{:href => "/refresh"} Refresh List
-  (last refreshed at #{@age})
+.title
+  %h1 #{@title}
+  - if @title == MY_STORIES
+    %a{:href => "/refresh"} Refresh List
+    (last refreshed at #{Time.at(@age).strftime("%l:%M %P")})
 .stories
   - @stories.each do |story|
-    .story
+    .story{:class => "#{story[:state]}",:"data-story-id" => "#{story[:id]}", :"data-project-id" => "#{story[:project]}"}
+      %div{:class => "story-type #{story[:type]}"}
       %span
-        %a{:href => "#{story[:url]}"} #{story[:name]}
-        [#{story[:type]}] [#{story[:state]}]
+        %a.name #{story[:name]}
+      %span.actions
+        - @actions = next_action(story[:state])
+        = render(:haml, :actions, :locals => {:actions => @actions})
+      %p.description #{story[:description]}

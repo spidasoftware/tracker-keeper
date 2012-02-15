@@ -1,0 +1,10 @@
+.story-id
+  %strong ID:
+  %span #{@story.id}
+.story-url
+  %strong URL:
+  %a{:href => "#{@story.url}",:target => "_blank"} #{@story.url}
+.story-description
+  %p
+    %strong Description:
+    #{@story.description.empty? ? '(None)' : @story.description}
