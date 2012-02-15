@@ -114,11 +114,11 @@ get '/search' do
 end
 
 get '/stories', :auth => :user do
-  if session[:cache_time] and Time.now - Time.at(session[:cache_time].to_i) > 600
+  if session[:cache_time] and Time.now - Time.at(session[:cache_time].to_f) > 600
     session[:stories] = nil
   end
   stories = session[:stories] ||= begin
-    session[:cache_time] = Time.now.nsec
+    session[:cache_time] = Time.now.strftime("%s")
     get_stories
   end
   render_stories(MY_STORIES, stories,session[:cache_time])
