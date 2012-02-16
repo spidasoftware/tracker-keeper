@@ -1,9 +1,14 @@
+.story-labels
+  - unless @story.labels.nil?
+    - @story.labels.split(",").each do |label|
+      %span.label #{label}
 .story-id
   %strong ID:
   %span #{@story.id}
 .story-url
   %strong URL:
   %a{:href => "#{@story.url}",:target => "_blank"} #{@story.url}
+
 .story-description
   %p
     %strong Description:
