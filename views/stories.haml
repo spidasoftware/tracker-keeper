@@ -1,13 +1,13 @@
 .title
   %h1 #{@title}
   - if @title == MY_STORIES
-    %a{:href => "/refresh"} Refresh List
+    %a.btn#refresh Refresh
     (last refreshed at #{Time.at(@age.to_f).strftime("%l:%M %P")})
 .stories
   - @stories.each do |story|
     .story{:class => "#{story[:state]}",:"data-story-id" => "#{story[:id]}", :"data-project-id" => "#{story[:project]}"}
       %div{:class => "story-type #{story[:type]}"}
-      %span
+      %div.story-name
         %a.name #{story[:name]}
       %span.actions
         - @actions = next_action(story[:state])

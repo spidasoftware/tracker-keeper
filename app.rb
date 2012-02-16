@@ -6,6 +6,10 @@ require 'pivotal-tracker'
 MY_STORIES = "My Stories"
 
 def get_stories filter=nil
+  if session[:cache_time] and Time.now - Time.at(session[:cache_time].to_f) > 600
+    session[:stories] = nil
+  end
+  return session[:stories] if session[:stories]
   PivotalTracker::Client.token = user[:token]
   projects = PivotalTracker::Project.all
   # :search parameter must be first, or the other params
@@ -21,6 +25,8 @@ def get_stories filter=nil
   end.sort_by do |s|
     priority s[:state]
   end
+  session[:cache_time] = Time.now.strftime("%s")
+  session[:stories] = stories
 end
 
 def to_data project, story
@@ -82,9 +88,9 @@ def logged_in?
   not session[:token].nil?
 end
 
-def render_stories title, stories, age
-  @title, @stories, @age = title, stories, age
-  haml :stories
+def render_stories title, stories, showlayout=true
+  @title, @stories, @age = title, stories, session[:cache_time]
+  haml :stories, :layout => showlayout
 end
 
 get '/', :auth => :user do
@@ -104,11 +110,7 @@ post '/search' do
   stories = session[:stories].select {|s|
     s[:name].downcase.include?(params[:search].downcase)
   }
-  render_stories(
-    "Search",
-    # "Search for &quot;#{params[:search]}&quot;",
-    stories,
-   session[:cache_time])
+  render_stories("Search",stories)
 end
 
 get '/search' do
@@ -116,19 +118,12 @@ get '/search' do
 end
 
 get '/stories', :auth => :user do
-  if session[:cache_time] and Time.now - Time.at(session[:cache_time].to_f) > 600
-    session[:stories] = nil
-  end
-  stories = session[:stories] ||= begin
-    session[:cache_time] = Time.now.strftime("%s")
-    get_stories
-  end
-  render_stories(MY_STORIES, stories,session[:cache_time])
+  render_stories(MY_STORIES, get_stories, !!!params[:ajax])
 end
 
 get '/refresh', :auth => :user do
   session[:stories] = nil
-  redirect to('/stories')
+  render_stories(MY_STORIES, get_stories, false)
 end
 
 get '/load', :auth => :user do

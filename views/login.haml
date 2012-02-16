@@ -1,8 +1,9 @@
-%h1 Log in
-.login
-  %form{:method => "post", :action => "login"}
-    %label API Token:
-    %input{:type => "text", :name => "token"}
-    %label Name:
-    %input{:type => "text", :name => "name"}
-    %input{:type => "submit"}
+.title
+  %h1 Log in
+  .login
+    %form#login{:method => "post", :action => "login"}
+      %label API Token:
+      %input#token{:type => "text", :name => "token"}
+      %label Name or Initials:
+      %input#name{:type => "text", :name => "name"}
+      %input{:type => "submit", :onclick => "return tracker.login()"}
