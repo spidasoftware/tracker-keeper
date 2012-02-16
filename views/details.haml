@@ -1,4 +1,5 @@
 .story-labels
+  %span.label.label-info #{@project.name}
   - unless @story.labels.nil?
     - @story.labels.split(",").each do |label|
       %span.label #{label}

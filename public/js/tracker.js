@@ -13,7 +13,7 @@ $(document).ready(function() {
     tracker.updateStatus(
       $(this).parents(".story").attr("data-project-id"),
       $(this).parents(".story").attr("data-story-id"),
-      $(this).val()
+      $(this).attr('data-action')
     );
     return false;
   });
@@ -39,16 +39,14 @@ var TrackerKeeper = function() {
   });
 
   this.updateStatus = (function(projectId, storyId, action) {
-    var button = $("div [data-story-id="+storyId+"] input[value="+action+"]")
-    if (button.size() > 0) {
-      button.attr("disabled","disabled");
+    var project = $("div [data-story-id="+storyId+"]")
+    if (project.size() > 0) {
       $.ajax({
         type:'POST',
         data:'storyId='+storyId+'&projectId='+projectId+'&action='+action,
         url:'/update',
         success:function(data) {
-          button.parents(".actions").html(data);
-          button.removeAttr("disabled");
+          project.children(".actions").html(data);
         }
       });
     }

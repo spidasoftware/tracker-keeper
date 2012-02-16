@@ -1,8 +1,10 @@
-- @actions.each do |action|
-    - btn_class = "btn"
+.btn-group
+  - @actions.each do |action|
+    - btn_class = ""
     - case(action)
-    -   when "Finish" ; btn_class = "btn-primary"
-    -   when "Reject" ; btn_class = "btn-danger"
-    -   when "Accept" ; btn_class = "btn-success"
-    -   when "Deliver"; btn_class = "btn-deliver"
-    %input.action{:type => "button",:value => "#{action}", :class => "action #{btn_class}"}
+    -   when "Finish" ; btn_class << "btn-primary"
+    -   when "Reject" ; btn_class << "btn-danger"
+    -   when "Accept" ; btn_class << "btn-success"
+    -   when "Deliver"; btn_class << "btn-deliver"
+    -   when "Start"  ; btn_class << "btn-start"
+    %a.btn.action{:class => "#{btn_class}", :"data-action" => "#{action}"} #{action}

@@ -130,8 +130,8 @@ get '/refresh', :auth => :user do
 end
 
 get '/load', :auth => :user do
-  if project = PivotalTracker::Project.find(params[:projectId].to_i) and
-    @story = project.stories.find(params[:storyId].to_i)
+  if @project = PivotalTracker::Project.find(params[:projectId].to_i) and
+    @story = @project.stories.find(params[:storyId].to_i)
       haml :details, :layout => false
   else
     "(None)"
