@@ -51,6 +51,8 @@ def priority state
     when "started"    ; 2
     when "finished"   ; 1
     when "delivered"  ; 0
+    when "accepted"  ; 5
+    when "rejected"  ; 2
   end
 end
 
